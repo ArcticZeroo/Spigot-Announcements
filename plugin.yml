@@ -4,4 +4,4 @@ version: 1.0
 commands:
    announce:
       description: lists all announce commands.
-      usage: /announce [interval | add | remove]
+      usage: /announce [interval | add | remove | removeall | help | info | version | list | prefix]
