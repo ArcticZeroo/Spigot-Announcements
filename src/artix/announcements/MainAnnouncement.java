@@ -214,10 +214,10 @@ public class MainAnnouncement extends JavaPlugin{
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce <null> | info | version" + ChatColor.GRAY + ": Displays plugin version information.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce interval <time>" + ChatColor.GRAY + ": Changes the interval between announcements (in seconds).");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce add <name> <message>" + ChatColor.GRAY + ": Adds a message to the announcements list.");
-		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce prefix <prefix>" + ChatColor.GRAY + ": Adds a message to the announcements list.");
+		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce prefix <prefix>" + ChatColor.GRAY + ": Changes the prefix before announcements.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce remove <name>" + ChatColor.GRAY + ": Removes a message from the announcements list.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce removeall" + ChatColor.GRAY + ": Removes all announcements at once.");
-		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce list" + ChatColor.GRAY + ": Shows all announcements in the rotation.");
+		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce list" + ChatColor.GRAY + ": Shows all announcements in the list.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce help" + ChatColor.GRAY + ": Shows you this list!");
 	}
 
@@ -305,7 +305,7 @@ public class MainAnnouncement extends JavaPlugin{
 					prefix = prefix.substring(1, prefix.length());
 					
 					if(announcementsList.size() > 0){
-						getServer().broadcastMessage(ChatColor.WHITE + prefix + ChatColor.WHITE + announcementsList.get(position));
+						getServer().broadcastMessage(ChatColor.WHITE + colorize(prefix) + ChatColor.WHITE + colorize(announcementsList.get(position)));
 					}
 	
 					position++;
