@@ -8,45 +8,45 @@ I made this because apparently other announcement plugins break in 1.9, and I wa
 Source for the plugin is available on 
 
 #Features:
-Works on 1.9 (apparently some others don't for some reason)
-Customizable prefix (command & config)
-Customizable message title and content (command & config)
-Customizable interval between messages
-Supports chat colors via &<x> when customizing
-Everything can be edited either ingame or through config.yml
+- Works on 1.9 (apparently some others don't for some reason)
+- Customizable prefix (command & config)
+- Customizable message title and content (command & config)
+- Customizable interval between messages
+- Supports chat colors via &<x> when customizing
+- Everything can be edited either ingame or through config.yml
 
 #Commands:
 /announce <null> | info | version
 
-Displays plugin version information.
+_Displays plugin version information._
 
 /announce interval <time>
 
-Changes the interval between announcements.
+_Changes the interval between announcements._
 
 /announce add <name> <message>
 
-Adds a message to the announcements list.
+_Adds a message to the announcements list._
 
 /announce prefix <prefix>
 
-Changes the prefix before announcements.
+_Changes the prefix before announcements._
 
 /announce remove <name>
 
-Removes a message from the announcements list.
+_Removes a message from the announcements list._
 
 /announce removeall
 
-Removes all announcements at once.
+_Removes all announcements at once._
 
 /announce list
 
-Shows all announcements in the list.
+_Shows all announcements in the list._
 
 /announce help
 
-Shows all available commands.
+_Shows all available commands._
 
 #Permissions:
 permission - command
