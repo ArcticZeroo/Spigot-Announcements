@@ -49,45 +49,45 @@ public class MainAnnouncement extends JavaPlugin{
 			if(length > 0){
 				if(args[0].equalsIgnoreCase("interval")){
 					if(sender.hasPermission(Permissions.INTERVAL) || sender.hasPermission(Permissions.ALL)){
-						announceInterval(sender, cmd, label, args, player);
+						announceInterval(args, player);
 					}else{
 						noPermission(player, "/announce interval");
 					}
 				}else if(args[0].equalsIgnoreCase("help")){
 					if(sender.hasPermission(Permissions.HELP) || sender.hasPermission(Permissions.ALL)){
-						announceHelp(sender, cmd, label, args, player);
+						announceHelp(player);
 					}else{
 						noPermission(player, "/announce help");
 					}
 				}else if(args[0].equalsIgnoreCase("add")){
 					if(sender.hasPermission(Permissions.ADD) || sender.hasPermission(Permissions.ALL)){
-						announceAdd(sender, cmd, label, args, player);
+						announceAdd(args, player);
 					}else{
 						noPermission(player, "/announce add");
 					}
 				}else if(args[0].equalsIgnoreCase("list")){
 					if(sender.hasPermission(Permissions.LIST) || sender.hasPermission(Permissions.ALL)){
-						announceList(sender, cmd, label, args, player);
+						announceList(player);
 					}else{
 						noPermission(player, "/announce list");
 					}
 				}else if(args[0].equalsIgnoreCase("remove")){
 					if(sender.hasPermission(Permissions.REMOVE) || sender.hasPermission(Permissions.ALL)){
-						announceRemove(sender, cmd, label, args, player);
+						announceRemove(args, player);
 					}else{
 						noPermission(player, "/announce remove");
 					}
 				
 				}else if(args[0].equalsIgnoreCase("removeall")){
 					if(sender.hasPermission(Permissions.REMOVE) || sender.hasPermission(Permissions.ALL)){
-						announceRemoveAll(sender, cmd, label, args, player);
+						announceRemoveAll(args, player);
 					}else{
 						noPermission(player, "/announce removeall");
 					}
 				
 				}else if(args[0].equalsIgnoreCase("prefix")){
 					if(sender.hasPermission(Permissions.PREFIX) || sender.hasPermission(Permissions.ALL)){
-						announcePrefix(sender, cmd, label, args, player);
+						announcePrefix(args, player);
 					}else{
 						noPermission(player, "/announce prefix");
 					}
@@ -95,7 +95,7 @@ public class MainAnnouncement extends JavaPlugin{
 					announceVersion(player);
 				}
 				else{
-					announceUnknown(sender, cmd, label, args, player);
+					announceUnknown(player);
 				}
 			}else if(length == 0){
 				announceVersion(player);
@@ -108,7 +108,7 @@ public class MainAnnouncement extends JavaPlugin{
 		
 	}
 	
-	public void announceInterval(CommandSender sender, Command cmd, String label, String[] args, Player player){
+	public void announceInterval(String[] args, Player player){
 		int length = args.length;
 		
 		if(length == 2){
@@ -124,7 +124,7 @@ public class MainAnnouncement extends JavaPlugin{
 		}
 	}
 	
-	public void announceRemove(CommandSender sender, Command cmd, String label, String[] args, Player player){
+	public void announceRemove(String[] args, Player player){
 		int length = args.length;
 		
 		if(length == 2){
@@ -154,7 +154,7 @@ public class MainAnnouncement extends JavaPlugin{
 		}
 	}
 	
-	public void announceRemoveAll(CommandSender sender, Command cmd, String label, String[] args, Player player){
+	public void announceRemoveAll(String[] args, Player player){
 		for(String key : config.getConfigurationSection("announcements").getKeys(true)){
 					config.set("announcements." + key, null);
 
@@ -167,7 +167,7 @@ public class MainAnnouncement extends JavaPlugin{
 			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "All " + ChatColor.YELLOW + "announcements" + ChatColor.GRAY + " removed.");	
 	}
 	
-	public void announceAdd(CommandSender sender, Command cmd, String label, String[] args, Player player){
+	public void announceAdd(String[] args, Player player){
 		int length = args.length;
 		
 		if(length > 2){
@@ -198,7 +198,7 @@ public class MainAnnouncement extends JavaPlugin{
 		}	
 	}
 
-	public void announceList(CommandSender sender, Command cmd, String label, String[] args, Player player){
+	public void announceList(Player player){
 		if((config.getConfigurationSection("announcements").getKeys(true)).size() > 0){ 
 			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Available " + ChatColor.YELLOW + "announcements" + ChatColor.GRAY + ":");
 			for(String key : config.getConfigurationSection("announcements").getKeys(true)){
@@ -209,7 +209,7 @@ public class MainAnnouncement extends JavaPlugin{
 		}
 	}
 	
-	public void announceHelp(CommandSender sender, Command cmd, String label, String[] args, Player player){
+	public void announceHelp(Player player){
 		player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Available " + ChatColor.YELLOW + "/announce" + ChatColor.GRAY + " commands:");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce <null> | info | version" + ChatColor.GRAY + ": Displays plugin version information.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce interval <time>" + ChatColor.GRAY + ": Changes the interval between announcements (in seconds).");
@@ -225,11 +225,11 @@ public class MainAnnouncement extends JavaPlugin{
 		player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Announcements version " + ChatColor.YELLOW + "" + this.getDescription().getVersion() + ChatColor.GRAY +" by " + ChatColor.YELLOW + "Artix" + ChatColor.GRAY + " is active." );
 	}
 	
-	public void announceUnknown(CommandSender sender, Command cmd, String label, String[] args, Player player){
+	public void announceUnknown(Player player){
 		player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.RED + "Error: " + ChatColor.GRAY + "Unknown Sub-command.");
 	}
 	
-	public void announcePrefix(CommandSender sender, Command cmd, String label, String[] args, Player player){
+	public void announcePrefix(String[] args, Player player){
 		int length = args.length;
 		
 		if(length > 1){
@@ -251,10 +251,6 @@ public class MainAnnouncement extends JavaPlugin{
 			incorrectArgs(player, "/announce prefix", args.length, 1);
 		}	
 	}
-	
-	/*public void announceDebug(CommandSender sender, Command cmd, String label, String[] args, Player player){
-		player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Interval: " + ChatColor.YELLOW + config.getInt("interval") + ChatColor.GRAY + ", Position: " + ChatColor.YELLOW + config.getInt("position") + ChatColor.GRAY + ".");
-	}*/
 
 	public void noPermission(Player player, String command){
 		player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.RED + "Error: " + ChatColor.GRAY + "You do not have permission to perform " + ChatColor.YELLOW + command + ChatColor.GRAY + ".");
@@ -276,15 +272,7 @@ public class MainAnnouncement extends JavaPlugin{
 
 	public String colorize(String msg)
     {
-        String coloredMsg = "";
-        for(int i = 0; i < msg.length(); i++)
-        {
-            if(msg.charAt(i) == '&')
-                coloredMsg += '§';
-            else
-                coloredMsg += msg.charAt(i);
-        }
-        return coloredMsg;
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 	
 	public void setInterval(){
