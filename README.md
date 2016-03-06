@@ -17,27 +17,35 @@ Everything can be edited either ingame or through config.yml
 
 #Commands:
 /announce <null> | info | version
+
 Displays plugin version information.
 
 /announce interval <time>
+
 Changes the interval between announcements.
 
 /announce add <name> <message>
+
 Adds a message to the announcements list.
 
 /announce prefix <prefix>
+
 Changes the prefix before announcements.
 
 /announce remove <name>
+
 Removes a message from the announcements list.
 
 /announce removeall
+
 Removes all announcements at once.
 
 /announce list
+
 Shows all announcements in the list.
 
 /announce help
+
 Shows all available commands.
 
 #Permissions:
