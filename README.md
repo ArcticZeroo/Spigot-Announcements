@@ -51,10 +51,10 @@ _Shows all available commands._
 #Permissions:
 permission - command
 
-announce.add - /announce add
-announce.prefix - /announce prefix
-announce.remove- /announce remove
-announce.list - /announce list
-announce.interval - /announce interval
-announce.help - /announce help
-announce.* - /announce *
+- announce.add - /announce add
+- announce.prefix - /announce prefix
+- announce.remove- /announce remove
+- announce.list - /announce list
+- announce.interval - /announce interval
+- announce.help - /announce help
+- announce.* - /announce *
