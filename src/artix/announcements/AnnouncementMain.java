@@ -8,13 +8,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MainAnnouncement extends JavaPlugin{
+public class AnnouncementMain extends JavaPlugin{
 
 	//Initial Declarations
 	FileConfiguration config = this.getConfig();
 	ArrayList<String> announcementsList = new ArrayList<String>();
 	boolean announcementsRunning = config.getBoolean("running");
-	private Commands command = new Commands(this);
+	private AnnouncementCommands command = new AnnouncementCommands(this);
 	//End Initial Declarations
 	
 	@Override
@@ -48,45 +48,45 @@ public class MainAnnouncement extends JavaPlugin{
 			
 			if(length > 0){
 				if(args[0].equalsIgnoreCase(command.INTERVAL)){
-					if(sender.hasPermission(Permissions.INTERVAL) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.INTERVAL) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.interval(args, player);
 					}else{
 						command.noPermission(player, "/announce " + command.INTERVAL);
 					}
 				}else if(args[0].equalsIgnoreCase(command.HELP)){
-					if(sender.hasPermission(Permissions.HELP) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.HELP) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.help(player);
 					}else{
 						command.noPermission(player, "/announce " + command.HELP);
 					}
 				}else if(args[0].equalsIgnoreCase(command.ADD)){
-					if(sender.hasPermission(Permissions.ADD) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.ADD) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.add(args, player);
 					}else{
 						command.noPermission(player, "/announce " + command.ADD);
 					}
 				}else if(args[0].equalsIgnoreCase(command.LIST)){
-					if(sender.hasPermission(Permissions.LIST) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.LIST) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.list(player);
 					}else{
 						command.noPermission(player, "/announce " + command.LIST);
 					}
 				}else if(args[0].equalsIgnoreCase(command.REMOVE)){
-					if(sender.hasPermission(Permissions.REMOVE) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.REMOVE) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.remove(args, player);
 					}else{
 						command.noPermission(player, "/announce " + command.REMOVE);
 					}
 				
 				}else if(args[0].equalsIgnoreCase(command.REMOVEALL)){
-					if(sender.hasPermission(Permissions.REMOVE) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.REMOVE) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.removeall(args, player);
 					}else{
 						command.noPermission(player, "/announce " + command.REMOVEALL);
 					}
 				
 				}else if(args[0].equalsIgnoreCase(command.PREFIX)){
-					if(sender.hasPermission(Permissions.PREFIX) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.PREFIX) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.prefix(args, player);
 					}else{
 						command.noPermission(player, "/announce " + command.PREFIX);
@@ -94,25 +94,25 @@ public class MainAnnouncement extends JavaPlugin{
 				}else if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("version")){
 					command.version(player);
 				}else if(args[0].equalsIgnoreCase(command.MESSAGE)){
-					if(sender.hasPermission(Permissions.MESSAGE) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.MESSAGE) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.message(args);
 					}else{
 						command.noPermission(player, "/announce " + command.MESSAGE);
 					}
 				}else if(args[0].equalsIgnoreCase(command.START)){
-					if(sender.hasPermission(Permissions.START) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.START) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.start(args, player);
 					}else{
 						command.noPermission(player, "/announce " + command.START);
 					}
 				}else if(args[0].equalsIgnoreCase(command.STOP)){
-					if(sender.hasPermission(Permissions.STOP) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.STOP) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.stop(args, player);
 					}else{
 						command.noPermission(player, "/announce " + command.STOP);
 					}
 				}else if(args[0].equalsIgnoreCase(command.STATUS)){
-					if(sender.hasPermission(Permissions.STATUS) || sender.hasPermission(Permissions.ALL)){
+					if(sender.hasPermission(AnnouncementPermissions.STATUS) || sender.hasPermission(AnnouncementPermissions.ALL)){
 						command.status(player);
 					}else{
 						command.noPermission(player, "/announce " + command.STATUS);

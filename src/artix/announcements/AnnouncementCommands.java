@@ -9,11 +9,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
-public class Commands {
+public class AnnouncementCommands {
 	
-	private MainAnnouncement plugin;
+	private AnnouncementMain plugin;
 	
-	public Commands(MainAnnouncement main){
+	public AnnouncementCommands(AnnouncementMain main){
 		plugin = main;
 	}
 	
