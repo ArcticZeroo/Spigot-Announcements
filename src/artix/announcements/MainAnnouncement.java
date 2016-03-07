@@ -14,9 +14,13 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 public class MainAnnouncement extends JavaPlugin{
 
+	//Initial Declarations
 	FileConfiguration config = this.getConfig();
-	int position;
+	int position = config.getInt("position");
 	ArrayList<String> announcementsList = new ArrayList<String>();
+	boolean announcementsRunning = config.getBoolean("running");
+	BukkitScheduler scheduler = getServer().getScheduler();
+	//End Initial Declarations
 	
 	@Override
 	public void onEnable() {
@@ -24,11 +28,12 @@ public class MainAnnouncement extends JavaPlugin{
 		config.addDefault("interval", 120);
 		config.addDefault("position", 0);
 		config.addDefault("prefix", colorize("&f[&9Announcement&f]&r"));
+		config.addDefault("running", true);
 		config.options().copyDefaults(true);
 		
 		announcementsList = getList();
 		
-		if(announcementsList.size() > 0){
+		if(announcementsList.size() > 0 && announcementsRunning){
 			setInterval();
 		}
 	}
@@ -93,6 +98,36 @@ public class MainAnnouncement extends JavaPlugin{
 					}
 				}else if(args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("version")){
 					announceVersion(player);
+				}else if(args[0].equalsIgnoreCase("message")){
+					if(sender.hasPermission(Permissions.MESSAGE) || sender.hasPermission(Permissions.ALL)){
+						announceMessage(args);
+					}else{
+						noPermission(player, "/announce message");
+					}
+				}else if(args[0].equalsIgnoreCase("start")){
+					if(sender.hasPermission(Permissions.START) || sender.hasPermission(Permissions.ALL)){
+						announceStart(args, player);
+					}else{
+						noPermission(player, "/announce start");
+					}
+				}else if(args[0].equalsIgnoreCase("stop")){
+					if(sender.hasPermission(Permissions.STOP) || sender.hasPermission(Permissions.ALL)){
+						announceStop(args, player);
+					}else{
+						noPermission(player, "/announce stop");
+					}
+				}else if(args[0].equalsIgnoreCase("status")){
+					if(sender.hasPermission(Permissions.STATUS) || sender.hasPermission(Permissions.ALL)){
+						announceStatus(player);
+					}else{
+						noPermission(player, "/announce status");
+					}
+				}else if(args[0].equalsIgnoreCase("start")){
+					
+				}else if(args[0].equalsIgnoreCase("stop")){
+					
+				}else if(args[0].equalsIgnoreCase("status")){
+					
 				}
 				else{
 					announceUnknown(player);
@@ -155,16 +190,23 @@ public class MainAnnouncement extends JavaPlugin{
 	}
 	
 	public void announceRemoveAll(String[] args, Player player){
+		int announcementsRemoved = 0;
 		for(String key : config.getConfigurationSection("announcements").getKeys(true)){
 					config.set("announcements." + key, null);
 
 					config.set("position", 0);
-
+					
+					announcementsRemoved++;
+					
 					saveConfig();
 					announcementsList = getList();
 					setInterval();
 			}
-			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "All " + ChatColor.YELLOW + "announcements" + ChatColor.GRAY + " removed.");	
+			if(announcementsRemoved > 0){
+				player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "All " + ChatColor.YELLOW + announcementsRemoved + ChatColor.GRAY + " announcements" + ChatColor.GRAY + " removed.");	
+			}else{
+				player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.YELLOW + "0" + ChatColor.GRAY + " announcements" + ChatColor.GRAY + " to remove.");	
+			}
 	}
 	
 	public void announceAdd(String[] args, Player player){
@@ -202,7 +244,8 @@ public class MainAnnouncement extends JavaPlugin{
 		if((config.getConfigurationSection("announcements").getKeys(true)).size() > 0){ 
 			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Available " + ChatColor.YELLOW + "announcements" + ChatColor.GRAY + ":");
 			for(String key : config.getConfigurationSection("announcements").getKeys(true)){
-				player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + key + ChatColor.GRAY + " -" + ChatColor.WHITE + config.getString("announcements." + key) + ChatColor.GRAY + "");
+				String announcement = config.getString("announcements." + key);
+				player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + key + ChatColor.GRAY + " - \"" + ChatColor.WHITE + announcement.substring(1, announcement.length()) + ChatColor.GRAY + "\"");
 			}
 		}else{
 			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "No available " + ChatColor.YELLOW + "announcements" + ChatColor.GRAY + ".");
@@ -217,6 +260,9 @@ public class MainAnnouncement extends JavaPlugin{
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce prefix <prefix>" + ChatColor.GRAY + ": Changes the prefix before announcements.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce remove <name>" + ChatColor.GRAY + ": Removes a message from the announcements list.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce removeall" + ChatColor.GRAY + ": Removes all announcements at once.");
+		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce message <message>" + ChatColor.GRAY + ": Instantly announces the chosen message with your prefix.");
+		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce stop" + ChatColor.GRAY + ": Stops announcements, if started.");
+		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce start" + ChatColor.GRAY + ": Starts announcements, if stopped. Also resets timer.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce list" + ChatColor.GRAY + ": Shows all announcements in the list.");
 		player.sendMessage(ChatColor.BLUE + "> " + ChatColor.YELLOW + "/announce help" + ChatColor.GRAY + ": Shows you this list!");
 	}
@@ -252,6 +298,60 @@ public class MainAnnouncement extends JavaPlugin{
 		}	
 	}
 
+	public void announceMessage(String[] args){
+		String[] messageArgs = Arrays.copyOfRange(args, 1, args.length);
+		String announcement = "";
+		
+		for(String argument : messageArgs){
+			announcement += " " + argument;
+		}
+		broadcastAnnouncement(announcement);
+	}
+
+	public void announceStop(String[] args, Player player){
+		if(!announcementsRunning){
+			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.RED + "Error: " + ChatColor.GRAY + "Announcements are" + ChatColor.YELLOW + " already stopped" + ChatColor.GRAY + ".");
+		}else{
+			scheduler.cancelTasks(this);
+			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Announcements " + ChatColor.YELLOW + "stopped " + ChatColor.GRAY + "successfully.");
+			
+			config.set("running", false);
+			saveConfig();
+			announcementsRunning = false;
+		}
+	}
+	
+	public void announceStart(String[] args, Player player){
+		if(announcementsRunning){
+			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.RED + "Error: " + ChatColor.GRAY + "Announcements are" + ChatColor.YELLOW + " already started" + ChatColor.GRAY + ".");
+		}else{
+			setInterval();
+			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Announcements " + ChatColor.YELLOW + "started " + ChatColor.GRAY + "successfully with an interval of " + ChatColor.YELLOW + config.getInt("interval") +  " seconds" + ChatColor.GRAY + ".");
+			
+			config.set("running", true);
+			saveConfig();
+			announcementsRunning = true;
+			
+		}
+	}
+	
+	public void announceStatus(Player player){
+		int interval = config.getInt("interval");
+		int position = config.getInt("position");
+		String prefix = config.getString("prefix");
+		prefix = prefix.substring(1, prefix.length());
+		String announcementStatus = (announcementsRunning)? "running" : "stopped";
+
+		if(announcementsList.size() > 0){
+			String announcement = announcementsList.get(position);
+			announcement = announcement.substring(1, announcement.length());
+			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Announcements are currently " + ChatColor.YELLOW + announcementStatus + ChatColor.GRAY + ", with an interval of " + ChatColor.YELLOW + interval + " seconds" + ChatColor.GRAY + ". The next announcement will be:");
+			player.sendMessage(ChatColor.BLUE + "> " + ChatColor.GRAY + "\"" + ChatColor.WHITE + colorize(announcement) + ChatColor.GRAY + "\"");
+		}else{
+			player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.GRAY + "Announcements are currently " + ChatColor.YELLOW + announcementStatus + ChatColor.GRAY + ", with an interval of " + ChatColor.YELLOW + interval + " seconds" + ChatColor.GRAY + ". There are currently " + ChatColor.YELLOW + "no scheduled announcements" + ChatColor.GRAY + ".");
+		}
+	}
+	
 	public void noPermission(Player player, String command){
 		player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.RED + "Error: " + ChatColor.GRAY + "You do not have permission to perform " + ChatColor.YELLOW + command + ChatColor.GRAY + ".");
 	}
@@ -275,28 +375,35 @@ public class MainAnnouncement extends JavaPlugin{
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 	
+	public void broadcastAnnouncement(String announcement){
+		String prefix = config.getString("prefix");
+		prefix = prefix.substring(1, prefix.length());
+		
+		getServer().broadcastMessage(ChatColor.WHITE + colorize(prefix) + ChatColor.WHITE + colorize(announcement));
+	}
+	
 	public void setInterval(){
 		if(announcementsList.size() != 0){
 			int interval = config.getInt("interval");
 			
-			BukkitScheduler scheduler = getServer().getScheduler();
 			scheduler.cancelTasks(this);
 			scheduler.scheduleSyncRepeatingTask(this, new Runnable(){
 				public void run(){
-					int position = config.getInt("position");
+					position = config.getInt("position");
+					
+					if(announcementsList.size() > 0){
+						broadcastAnnouncement(announcementsList.get(position));
+						config.set("running", true);
+					}else{
+						config.set("running", false);
+					}
+	
+					position++;
 					
 					if(position >= announcementsList.size()){
 						position = 0;
 					}
 					
-					String prefix = config.getString("prefix");
-					prefix = prefix.substring(1, prefix.length());
-					
-					if(announcementsList.size() > 0){
-						getServer().broadcastMessage(ChatColor.WHITE + colorize(prefix) + ChatColor.WHITE + colorize(announcementsList.get(position)));
-					}
-	
-					position++;
 					config.set("position", position);
 					saveConfig();
 					
