@@ -1,6 +1,6 @@
 package artix.announcements;
 
-public class AnnouncementPermissions {
+public class AnnouncePermissions {
 	public static final String ADD = "announce.add";
 	public static final String PREFIX = "announce.prefix";
 	public static final String REMOVE = "announce.remove";

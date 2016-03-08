@@ -1,7 +1,7 @@
-name: Announcements
-main: artix.announcements.MainAnnouncement
+name: Announce
+main: artix.announcements.AnnounceMain
 version: 1.0
 commands:
    announce:
       description: lists all announce commands.
-      usage: /announce [interval | add | remove | removeall | help | info | version | list | prefix]
+      usage: /announce help - lists all /announce commands.

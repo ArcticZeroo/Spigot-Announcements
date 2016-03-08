@@ -9,15 +9,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
-public class AnnouncementCommands {
+public class AnnounceCommands{
 	
-	private AnnouncementMain plugin;
+	private AnnounceMain plugin;
 	
-	public AnnouncementCommands(AnnouncementMain main){
-		plugin = main;
+	public AnnounceCommands(AnnounceMain plugin){
+		this.plugin = plugin;
 	}
 	
-	FileConfiguration config = plugin.getConfig();
+	FileConfiguration config = plugin.config;
 	int position = config.getInt("position");
 	ArrayList<String> announcementsList = new ArrayList<String>();
 	boolean announcementsRunning = config.getBoolean("running");
