@@ -1,6 +1,7 @@
 package artix.announcements;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -19,7 +20,7 @@ public class AnnouncementCommands {
 	
 	FileConfiguration config = plugin.getConfig();
 	int position = config.getInt("position");
-	ArrayList<String> announcementsList = new ArrayList<String>();
+	List<String> announcementsList = new ArrayList<>();
 	boolean announcementsRunning = config.getBoolean("running");
 	BukkitScheduler scheduler = plugin.getServer().getScheduler();
 	
@@ -253,9 +254,9 @@ public class AnnouncementCommands {
 		player.sendMessage(ChatColor.BLUE + "Announce> " + ChatColor.RED + "Error: " + ChatColor.GRAY + "You entered " + ChatColor.YELLOW + (arguments - 1) + ChatColor.GRAY + " arguments. " + ChatColor.YELLOW + command + ChatColor.GRAY + " requires " + ChatColor.YELLOW + requiredArguments + ChatColor.GRAY + ".");
 	}
 	
-	public ArrayList<String> getList(){
+	public List<String> getList(){
 		
-		ArrayList<String> announcements = new ArrayList<String>();
+		List<String> announcements = new ArrayList<>();
 		
 		for(String key : config.getConfigurationSection("announcements").getKeys(false)){
 			announcements.add(config.getString("announcements." + key));
